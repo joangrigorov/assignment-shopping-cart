@@ -2,7 +2,17 @@
 return array(
     // This should be an array of module namespaces used in the application.
     'modules' => array(
+
+        // Modules
+        'DoctrineModule',
+        'DoctrineORMModule',
+
+        // MVC modules
         'Application',
+        'Orders',
+        'Products',
+        'Common',
+        'Cart'
     ),
 
     // These are various options for the listeners attached to the ModuleManager
