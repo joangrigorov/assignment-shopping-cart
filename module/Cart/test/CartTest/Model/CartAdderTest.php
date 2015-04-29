@@ -54,4 +54,21 @@ class CartAdderTest extends AbstractControllerTestCase
         $this->assertEquals(2, $item->getQuantityRequested()->getQuantity());
     }
 
+    /** @test */
+    public function increaseItemQuantity()
+    {
+        $product = new Product('Test product', '', '', new Price(200), new QuantityAvailable(50));
+
+        /** @var \PHPUnit_Framework_MockObject_Builder_InvocationMocker|CartItemsInterface $cartRepoMock */
+        $cartRepoMock = $this->getMockBuilder('\Cart\Repository\CartItemsInterface')->getMock();
+
+        $cartRepoMock->method('findItemByProductAndSession')->willReturn(
+            new CartItem('test_session_id', new QuantityRequested(2), $product)
+        );
+
+        $cartItemAdder = new CartItemAdder($cartRepoMock, 'test_session_id');
+        $item = $cartItemAdder->addToCart($product, new QuantityRequested(5));
+        $this->assertEquals(7, $item->getQuantityRequested()->getQuantity());
+    }
+
 }

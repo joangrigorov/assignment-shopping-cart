@@ -36,7 +36,7 @@ class Price
             throw new InvalidArgumentException('Product price amount should be numeric');
         }
 
-        $this->amount = $amount;
+        $this->amount = (float) $amount;
     }
 
     /**

@@ -49,4 +49,18 @@ class TotalPrice
         return (float) $this->amount;
     }
 
+    /**
+     * Applies discount to price
+     *
+     * Result is returned as a new value object
+     *
+     * @param DiscountRate $discountRate
+     * @return TotalPrice
+     */
+    public function applyDiscount(DiscountRate $discountRate)
+    {
+        $discount = ($discountRate->getDiscountRate() * $this->amount) / 100;
+        return new self($this->amount - $discount);
+    }
+
 }

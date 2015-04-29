@@ -38,7 +38,7 @@ class QuantityAvailable
             throw new InvalidArgumentException('Quantity available should be a positive number or zero');
         }
 
-        $this->quantity = $quantity;
+        $this->quantity = (int) $quantity;
     }
 
     /**

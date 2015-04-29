@@ -10,7 +10,7 @@ use Products\Value\QuantityAvailable;
  * Product
  *
  * @ORM\Table(name="products")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="\Products\Repository\ProductsRepository")
  */
 class Product
 {
@@ -58,7 +58,7 @@ class Product
      *
      * @var Price
      *
-     * @ORM\Embedded(class="\Products\Value\Price")
+     * @ORM\Embedded(class="\Products\Value\Price", columnPrefix = false)
      */
     private $price;
 
@@ -77,7 +77,7 @@ class Product
      *
      * @var \Products\Value\QuantityAvailable
      *
-     * @ORM\Embedded(class="\Products\Value\QuantityAvailable")
+     * @ORM\Embedded(class="\Products\Value\QuantityAvailable", columnPrefix = false)
      */
     private $quantityAvailable;
 

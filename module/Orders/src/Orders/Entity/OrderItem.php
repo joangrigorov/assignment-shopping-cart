@@ -31,7 +31,7 @@ class OrderItem
      *
      * @var QuantityRequested
      *
-     * @ORM\Embedded(class="\Common\Value\QuantityRequested")
+     * @ORM\Embedded(class="\Common\Value\QuantityRequested", columnPrefix = false)
      */
     private $quantityRequested;
 
@@ -64,7 +64,7 @@ class OrderItem
      *
      * @var \Orders\Value\PricePurchased
      *
-     * @ORM\Embedded(class="\Orders\Value\PricePurchased")
+     * @ORM\Embedded(class="\Orders\Value\PricePurchased", columnPrefix = false)
      */
     private $pricePurchased;
 

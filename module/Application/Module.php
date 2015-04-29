@@ -11,14 +11,25 @@ namespace Application;
 
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
+use Zend\View\Helper\FlashMessenger;
+use Zend\View\HelperPluginManager;
 
 class Module
 {
     public function onBootstrap(MvcEvent $e)
     {
-        $eventManager        = $e->getApplication()->getEventManager();
+        $eventManager = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
+        /** @var HelperPluginManager $viewHelperManager */
+        $viewHelperManager = $e->getApplication()->getServiceManager()
+            ->get('ViewHelperManager');
+
+        /** @var FlashMessenger $flashMessenger */
+        $flashMessenger = $viewHelperManager->get('FlashMessenger');
+        $flashMessenger->setMessageOpenFormat('<div%s><p>')
+            ->setMessageSeparatorString('</p><p>')
+            ->setMessageCloseString('</p></div>');
     }
 
     public function getConfig()

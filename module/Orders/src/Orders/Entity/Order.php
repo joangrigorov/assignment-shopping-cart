@@ -41,7 +41,7 @@ class Order
      *
      * @var \Orders\Value\TotalPrice
      *
-     * @ORM\Embedded(class="\Orders\Value\TotalPrice")
+     * @ORM\Embedded(class="\Orders\Value\TotalPrice", columnPrefix = false)
      */
     private $totalPrice;
 

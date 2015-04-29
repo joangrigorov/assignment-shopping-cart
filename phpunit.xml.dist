@@ -5,5 +5,11 @@
         <testsuite name="Cart">
             <directory>./module/Cart/test/CartTest</directory>
         </testsuite>
+        <testsuite name="Products">
+            <directory>./module/Products/test/ProductsTest</directory>
+        </testsuite>
+        <testsuite name="Orders">
+            <directory>./module/Orders/test/OrdersTest</directory>
+        </testsuite>
     </testsuites>
 </phpunit>

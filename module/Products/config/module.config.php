@@ -1,16 +1,30 @@
 <?php
-/**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/ZendSkeletonApplication for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- */
 
 return [
     'router' => [
         'routes' => [
-
+            'products' => [
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => [
+                    'route' => '/products',
+                    'defaults' => [
+                        'controller' => 'Products\Controller\Index',
+                        'action' => 'index',
+                    ],
+                ],
+                'may_terminate' => true,
+                'child_routes' => [
+                    'products' => [
+                        'type' => 'Zend\Mvc\Router\Http\Literal',
+                        'options' => [
+                            'route' => '/new',
+                            'defaults' => [
+                                'action' => 'new',
+                            ],
+                        ]
+                    ],
+                ]
+            ],
         ],
     ],
     'service_manager' => [
@@ -23,6 +37,22 @@ return [
     'view_manager' => [
         'template_path_stack' => [
             __DIR__ . '/../view',
+        ],
+    ],
+    'doctrine' => [
+        'driver' => [
+            'ProductsOrmDriver' => [
+                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+                'cache' => 'array',
+                'paths' => [
+                    __DIR__ . '/../src/Products'
+                ]
+            ],
+            'orm_default' => [
+                'drivers' => [
+                    'Products' => 'ProductsOrmDriver'
+                ],
+            ],
         ],
     ]
 ];

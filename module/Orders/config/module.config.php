@@ -24,5 +24,19 @@ return [
         'template_path_stack' => [
             __DIR__ . '/../view',
         ],
+    ],
+    'doctrine' => [
+        'driver' => [
+            'OrdersOrmDriver' => [
+                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+                'cache' => 'array',
+                'paths' => [__DIR__ . '/../src/Orders/Entity']
+            ],
+            'orm_default' => [
+                'drivers' => [
+                    'Orders\Entity' => 'OrdersOrmDriver'
+                ],
+            ],
+        ],
     ]
 ];
