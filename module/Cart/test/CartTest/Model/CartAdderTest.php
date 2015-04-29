@@ -3,8 +3,8 @@
 namespace CartTest\Model;
 
 use Cart\Entity\CartItem;
-use Cart\Model\CartItemAdder;
-use Cart\Repository\CartItemsInterface;
+use Cart\Utils\CartItemAdder;
+use Cart\Repository\CartItemsRepositoryInterface;
 use Common\Test\SeekAppRootTrait;
 use Common\Value\QuantityRequested;
 use Products\Entity\Product;
@@ -29,8 +29,8 @@ class CartAdderTest extends AbstractControllerTestCase
     {
         $product = new Product('Test product', '', '', new Price(200), new QuantityAvailable(5));
 
-        /** @var \PHPUnit_Framework_MockObject_Builder_InvocationMocker|CartItemsInterface $cartRepoMock */
-        $cartRepoMock = $this->getMockBuilder('\Cart\Repository\CartItemsInterface')->getMock();
+        /** @var \PHPUnit_Framework_MockObject_Builder_InvocationMocker|CartItemsRepositoryInterface $cartRepoMock */
+        $cartRepoMock = $this->getMockBuilder('\Cart\Repository\CartItemsRepositoryInterface')->getMock();
 
         $cartItemAdder = new CartItemAdder($cartRepoMock, 'test_session_id');
         $result = $cartItemAdder->addToCart($product, new QuantityRequested(1));
@@ -42,8 +42,8 @@ class CartAdderTest extends AbstractControllerTestCase
     {
         $product = new Product('Test product', '', '', new Price(200), new QuantityAvailable(5));
 
-        /** @var \PHPUnit_Framework_MockObject_Builder_InvocationMocker|CartItemsInterface $cartRepoMock */
-        $cartRepoMock = $this->getMockBuilder('\Cart\Repository\CartItemsInterface')->getMock();
+        /** @var \PHPUnit_Framework_MockObject_Builder_InvocationMocker|CartItemsRepositoryInterface $cartRepoMock */
+        $cartRepoMock = $this->getMockBuilder('\Cart\Repository\CartItemsRepositoryInterface')->getMock();
 
         $cartRepoMock->method('findItemByProductAndSession')->willReturn(
             new CartItem('test_session_id', new QuantityRequested(1), $product)
@@ -59,8 +59,8 @@ class CartAdderTest extends AbstractControllerTestCase
     {
         $product = new Product('Test product', '', '', new Price(200), new QuantityAvailable(50));
 
-        /** @var \PHPUnit_Framework_MockObject_Builder_InvocationMocker|CartItemsInterface $cartRepoMock */
-        $cartRepoMock = $this->getMockBuilder('\Cart\Repository\CartItemsInterface')->getMock();
+        /** @var \PHPUnit_Framework_MockObject_Builder_InvocationMocker|CartItemsRepositoryInterface $cartRepoMock */
+        $cartRepoMock = $this->getMockBuilder('\Cart\Repository\CartItemsRepositoryInterface')->getMock();
 
         $cartRepoMock->method('findItemByProductAndSession')->willReturn(
             new CartItem('test_session_id', new QuantityRequested(2), $product)

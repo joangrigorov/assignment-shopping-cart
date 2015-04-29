@@ -63,4 +63,14 @@ class QuantityRequested
         return (int) $this->quantity;
     }
 
+    /**
+     * Get value for printing
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return (string) $this->getQuantity();
+    }
+
 }

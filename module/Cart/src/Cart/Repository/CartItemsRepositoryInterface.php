@@ -10,7 +10,7 @@ use Products\Entity\Product;
  *
  * @package Cart\Repository
  */
-interface CartItemsInterface
+interface CartItemsRepositoryInterface
 {
 
     /**
@@ -19,7 +19,7 @@ interface CartItemsInterface
      * @param CartItem $cartItem
      * @return $this Provides fluent interface
      */
-    public function add(CartItem $cartItem);
+    public function save(CartItem $cartItem);
 
     /**
      * Find already existing item in cart by session
@@ -29,5 +29,22 @@ interface CartItemsInterface
      * @return CartItem
      */
     public function findItemByProductAndSession($sessionID, Product $product);
+
+    /**
+     * Get items in cart by user session
+     *
+     * @param string $sessionID
+     * @return CartItem[]
+     */
+    public function getItemsBySession($sessionID);
+
+    /**
+     * Find cart item by ID and user session
+     *
+     * @param integer $id
+     * @param string $sessionID
+     * @return CartItem
+     */
+    public function findItemByIDAndSession($id, $sessionID);
 
 }

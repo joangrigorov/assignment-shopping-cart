@@ -2,6 +2,7 @@
 
 namespace Products\Value;
 
+use Common\Value\QuantityRequested;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -47,6 +48,19 @@ class Price
     public function getAmount()
     {
         return (float) $this->amount;
+    }
+
+    /**
+     * Get quantified price
+     *
+     * Returns new price value object
+     *
+     * @param QuantityRequested $quantityRequested
+     * @return Price
+     */
+    public function quantify(QuantityRequested $quantityRequested)
+    {
+        return new self($quantityRequested->getQuantity() * $this->getAmount());
     }
 
 }

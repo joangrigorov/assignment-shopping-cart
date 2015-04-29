@@ -26,4 +26,15 @@ class ProductsRepository extends EntityRepository
         return $this;
     }
 
+    /**
+     * Find product by ID
+     *
+     * @param integer $id
+     * @return null|Product
+     */
+    public function findProductById($id)
+    {
+        return $this->findOneBy(['id' => $id]);
+    }
+
 }

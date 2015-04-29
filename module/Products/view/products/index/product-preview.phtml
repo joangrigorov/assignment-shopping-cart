@@ -8,7 +8,7 @@ $product = $this->product;
             <h3 class="panel-title">
                 <?php echo $this->escapeHtml($product->getName()) ?>
                 <strong class="pull-right">
-                    <?php echo $this->currencyFormat($product->getPrice()->getAmount()); ?>
+                    <?php echo $this->currencyFormat($product->getPrice()->getAmount(), 'USD'); ?>
                 </strong>
             </h3>
         </div>
@@ -16,7 +16,8 @@ $product = $this->product;
             <p><?php echo nl2br($this->escapeHtml($product->getShortDescription())); ?></p>
             <p>
                 <a class="btn btn-success pull-right"
-                   href="http://framework.zend.com/zf2"
+                   href="<?php echo $this->url('cart/add',
+                       ['product' => $product->getId(), 'quantity' => 1]) ?>"
                    target="_blank">Add to cart &raquo;</a>
             </p>
         </div>

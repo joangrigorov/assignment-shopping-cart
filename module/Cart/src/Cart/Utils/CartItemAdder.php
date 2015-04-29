@@ -1,8 +1,8 @@
 <?php
 
-namespace Cart\Model;
+namespace Cart\Utils;
 use Cart\Entity\CartItem;
-use Cart\Repository\CartItemsInterface;
+use Cart\Repository\CartItemsRepositoryInterface;
 use Products\Entity\Product;
 use Common\Value\QuantityRequested;
 
@@ -18,7 +18,7 @@ class CartItemAdder //implements CartItemAdderInterface
     /**
      * Cart items repository
      *
-     * @var CartItemsInterface
+     * @var CartItemsRepositoryInterface
      */
     private $cartItemsRepository;
 
@@ -34,10 +34,10 @@ class CartItemAdder //implements CartItemAdderInterface
      *
      * Injects cart items repository
      *
-     * @param CartItemsInterface $cartItems
+     * @param CartItemsRepositoryInterface $cartItems
      * @param string $sessionID
      */
-    public function __construct(CartItemsInterface $cartItems, $sessionID)
+    public function __construct(CartItemsRepositoryInterface $cartItems, $sessionID)
     {
         $this->cartItemsRepository = $cartItems;
         $this->sessionID = $sessionID;
@@ -59,7 +59,7 @@ class CartItemAdder //implements CartItemAdderInterface
         } else {
             $cartItem->increaseQuantity($quantityRequested);
         }
-        $this->cartItemsRepository->add($cartItem);
+        $this->cartItemsRepository->save($cartItem);
         return $cartItem;
     }
 

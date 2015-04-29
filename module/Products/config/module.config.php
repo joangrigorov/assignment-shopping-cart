@@ -15,12 +15,21 @@ return [
                 ],
                 'may_terminate' => true,
                 'child_routes' => [
-                    'products' => [
+                    'new' => [
                         'type' => 'Zend\Mvc\Router\Http\Literal',
                         'options' => [
                             'route' => '/new',
                             'defaults' => [
                                 'action' => 'new',
+                            ],
+                        ]
+                    ],
+                    'view' => [
+                        'type' => 'segment',
+                        'options' => [
+                            'route' => '/view/:id',
+                            'defaults' => [
+                                'action' => 'view',
                             ],
                         ]
                     ],

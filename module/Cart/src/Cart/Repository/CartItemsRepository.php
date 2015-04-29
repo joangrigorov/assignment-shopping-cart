@@ -2,6 +2,7 @@
 
 namespace Cart\Repository;
 
+use Cart\Collection\CartItemsCollection;
 use Cart\Entity\CartItem;
 use Doctrine\ORM\EntityRepository;
 use Products\Entity\Product;
@@ -11,7 +12,7 @@ use Products\Entity\Product;
  *
  * @package Cart\Repository
  */
-class CartItems extends EntityRepository implements CartItemsInterface
+class CartItemsRepository extends EntityRepository implements CartItemsRepositoryInterface
 {
 
     /**
@@ -20,7 +21,7 @@ class CartItems extends EntityRepository implements CartItemsInterface
      * @param CartItem $cartItem
      * @return $this Provides fluent interface
      */
-    public function add(CartItem $cartItem)
+    public function save(CartItem $cartItem)
     {
         $this->_em->persist($cartItem);
         $this->_em->flush($cartItem);
@@ -40,5 +41,29 @@ class CartItems extends EntityRepository implements CartItemsInterface
             'sessionID' => $sessionID,
             'product' => $product
         ]);
+    }
+
+    /**
+     * Get items in cart by user session
+     *
+     * @param string $sessionID
+     * @return CartItem[]|CartItemsCollection|null
+     */
+    public function getItemsBySession($sessionID)
+    {
+        $items = $this->findBy(['sessionID' => $sessionID]);
+        return new CartItemsCollection($items);
+    }
+
+    /**
+     * Find cart item by ID and user session
+     *
+     * @param integer $id
+     * @param string $sessionID
+     * @return CartItem
+     */
+    public function findItemByIDAndSession($id, $sessionID)
+    {
+        return $this->findOneBy(['id' => $id, 'sessionID' => $sessionID]);
     }
 }

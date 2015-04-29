@@ -12,7 +12,7 @@ use Products\Entity\Product;
  * Represents a product added to cart, plus its requested quantity
  *
  * @ORM\Table(name="cart", indexes={@ORM\Index(name="fk_cart_1_idx", columns={"product"}), @ORM\Index(name="session_id", columns={"sessionID"})})
- * @ORM\Entity(repositoryClass=Cart\Repository\CartItems)
+ * @ORM\Entity(repositoryClass="\Cart\Repository\CartItemsRepository")
  */
 class CartItem
 {
@@ -41,7 +41,7 @@ class CartItem
      *
      * @var QuantityRequested
      *
-     * @ORM\Embedded(class="\Common\Value\QuantityRequested")
+     * @ORM\Embedded(class="\Common\Value\QuantityRequested", columnPrefix=false)
      */
     private $quantityRequested;
 
@@ -206,6 +206,15 @@ class CartItem
         return $this;
     }
 
+    /**
+     * Retrieve total price, based on requested quantity
+     *
+     * @return \Products\Value\Price
+     */
+    public function getQuantifiedPrice()
+    {
+        return $this->product->getPrice()->quantify($this->getQuantityRequested());
+    }
 
 }
 

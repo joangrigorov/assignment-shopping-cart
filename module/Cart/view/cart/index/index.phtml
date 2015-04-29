@@ -1,0 +1,87 @@
+<?php
+$this->headScript()
+     ->prependFile($this->basePath('js/cart.init.js'));
+
+echo $this->flashMessenger()->render('success', ['alert', 'alert-success']);
+/** @var \Cart\Entity\CartItem[]|\Cart\Collection\CartItemsCollection $cartItems */
+$cartItems = $this->items;
+?>
+
+<?php if (!count($cartItems)) : ?>
+<div class="alert alert-warning">
+    Cart is empty
+</div>
+<?php else : ?>
+<form action="<?php echo $this->url('cart/update'); ?>" method="POST">
+<table class="table table-condensed">
+    <thead>
+        <tr>
+            <th>Product</th>
+            <th width="40">Quantity</th>
+            <th width="200">Price</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($cartItems as $item) : ?>
+        <tr>
+            <td>
+                <a href="<?php echo $this->url('products/view', ['id' => $item->getProduct()->getId()]); ?>">
+                <?php echo $this->escapeHtml($item->getProduct()->getName()); ?>
+                </a>
+            </td>
+            <td>
+                <input type="text" class="form-control quantity-input"
+                       name="quantity[<?php echo $item->getId(); ?>]"
+                       data-default-value="<?php echo $item->getQuantityRequested(); ?>"
+                       value="<?php echo $item->getQuantityRequested(); ?>">
+            </td>
+            <td>
+                <?php echo $this->currencyFormat($item->getProduct()->getPrice()->getAmount(), 'USD') ?>
+                x
+                <?php echo $item->getQuantityRequested(); ?> =
+                <?php echo $this->currencyFormat($item->getQuantifiedPrice()->getAmount(), 'USD'); ?>
+            </td>
+            <td></td>
+        </tr>
+        <?php endforeach; ?>
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="2">
+            </td>
+            <td colspan="2">
+                <strong>Total price: <?php
+                    echo $this->currencyFormat($cartItems->sumOverallPrice()->getAmount(), 'USD'); ?>
+                </strong>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="btn-group">
+                            <button class="btn btn-default"
+                                    onclick="$.event.trigger({type: 'cart.reset'});return false;">
+                                Reset
+                            </button>
+                            <button class="btn btn-default"
+                                    type="submit">
+                                Recalculate
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 pull-right">
+                        <div class="btn-group">
+                            <button class="btn btn-success">
+                                Checkout
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </tfoot>
+</table>
+</form>
+<?php endif; ?>
