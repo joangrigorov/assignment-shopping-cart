@@ -4,12 +4,13 @@ return [
     'router' => [
         'routes' => [
             'products' => [
-                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'type' => 'segment',
                 'options' => [
-                    'route' => '/products',
+                    'route' => '/products[/page/:page]',
                     'defaults' => [
                         'controller' => 'Products\Controller\Index',
                         'action' => 'index',
+                        'page' => 1
                     ],
                 ],
                 'may_terminate' => true,

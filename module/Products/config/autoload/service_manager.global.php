@@ -12,7 +12,14 @@ return [
                     new \Products\Form\ProductFilter(),
                     new \Products\Hydrator\ProductsHydrator()
                 );
-            }
+            },
+            'Products\Utils\ProductsBrowser' => function (\Zend\ServiceManager\ServiceLocatorInterface $sm) {
+                /** @var \Products\Repository\ProductsRepository $repo */
+                $repo = $sm->get('Products\Repository\ProductsRepository');
+                return new \Products\Utils\ProductsBrowser(
+                    $repo
+                );
+            },
         ]
     ]
 ];

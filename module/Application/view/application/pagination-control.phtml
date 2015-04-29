@@ -1,0 +1,45 @@
+<?php if ($this->pageCount > 1): ?>
+<ul class="pagination pagination-centered margin-none">
+        <!-- Previous page link -->
+        <?php if (isset($this->previous)): ?>
+            <li>
+                <a  data-page="<?php echo $this->previous; ?>"
+                    href="<?php echo $this->url($this->route, ['page' => $this->previous]); ?>">
+                    <?php echo $this->translate('Previous') ?></a>
+            </li>
+        <?php else: ?>
+            <li class="disabled">
+                <a href="JavaScript:;" data-follow-href="false"><?php echo $this->translate('Previous') ?></a>
+            </li>
+        <?php endif; ?>
+
+        <!-- Numbered page links -->
+        <?php foreach ($this->pagesInRange as $page): ?>
+            <?php if ($page != $this->current): ?>
+                <li>
+                    <a data-page="<?php echo $page; ?>"
+                        href="<?php echo $this->url($this->route, ['page' => $page]); ?>">
+                        <?php echo $page; ?></a>
+                </li>
+            <?php else: ?>
+                <li class="disabled">
+                    <a href="JavaScript:;" data-follow-href="false">
+                        <?php echo $page; ?></a>
+                </li>
+            <?php endif; ?>
+        <?php endforeach; ?>
+
+        <!-- Next page link -->
+        <?php if (isset($this->next)): ?>
+            <li>
+                <a data-page="<?php echo $this->next; ?>"
+                    href="<?php echo $this->url($this->route, ['page' => $this->next]); ?>">
+                    <?php echo $this->translate('Next') ?></a>
+            </li>
+        <?php else: ?>
+            <li class="disabled">
+                <a href="JavaScript:;" data-follow-href="false"><?php echo $this->translate('Next') ?></a>
+            </li>
+        <?php endif; ?>
+</ul>
+<?php endif; ?>

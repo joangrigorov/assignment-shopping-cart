@@ -21,7 +21,12 @@ class IndexController extends AbstractActionController
      */
     public function indexAction()
     {
-        return new ViewModel();
+        /** @var \Products\Utils\ProductsBrowser $productsBrowser */
+        $productsBrowser = $this->serviceLocator->get('Products\Utils\ProductsBrowser');
+        $currentPageProducts = $productsBrowser->openPageOfProducts($this->params()->fromRoute('page'));
+        return [
+            'products' => $currentPageProducts
+        ];
     }
 
     /**
