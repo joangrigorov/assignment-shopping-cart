@@ -8,7 +8,7 @@ use Common\Value\QuantityRequested;
 use Products\Entity\Product;
 
 /**
- * OrderItem
+ * Order item entity
  *
  * @ORM\Table(name="order_items", indexes={@ORM\Index(name="fk_order_items_1_idx", columns={"order"}), @ORM\Index(name="fk_order_items_2_idx", columns={"product"})})
  * @ORM\Entity
@@ -40,9 +40,9 @@ class OrderItem
      *
      * @var \Orders\Entity\Order
      *
-     * @ORM\ManyToOne(targetEntity="\Orders\Entity\Order", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="\Orders\Entity\Order", inversedBy="orderItems")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="order", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="`order`", referencedColumnName="id")
      * })
      */
     private $order;

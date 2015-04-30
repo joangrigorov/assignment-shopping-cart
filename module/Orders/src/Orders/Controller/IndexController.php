@@ -58,6 +58,7 @@ class IndexController extends AbstractActionController
     {
         /** @var Order $order */
         $order = $checkoutForm->getObject();
+        $order->setOrderDate(new \DateTimeImmutable('now'));
         $order->setOrderItemsFromCart($cart);
         /** @var \Orders\Repository\OrdersRepository $ordersRepo */
         $ordersRepo = $this->serviceLocator->get('Orders\Repository\OrdersRepository');

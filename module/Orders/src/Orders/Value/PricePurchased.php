@@ -29,6 +29,7 @@ class PricePurchased
      * Sets price amount
      *
      * @param float $amount
+     * @throws InvalidArgumentException
      */
     public function __construct($amount)
     {
@@ -36,7 +37,7 @@ class PricePurchased
             throw new InvalidArgumentException('Purchased price amount should be numeric');
         }
 
-        $this->amount = $amount;
+        $this->amount = (float) $amount;
     }
 
     /**

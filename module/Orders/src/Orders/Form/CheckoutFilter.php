@@ -12,7 +12,7 @@ use Zend\InputFilter\InputFilter;
 class CheckoutFilter extends InputFilter
 {
 
-    public function init()
+    public function __construct()
     {
         $this->add([
             'name' => 'firstName',

@@ -54,9 +54,9 @@ class Order
      *
      * @var OrderItem[]|ArrayCollection|array
      *
-     * @ORM\OneToMany(targetEntity="\Orders\Entity\OrderItem", mappedBy="order", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="\Orders\Entity\OrderItem", mappedBy="`order`",cascade={"persist"})
      */
-    private $orderItems = [];
+    private $orderItems;
 
     /**
      * Total price
@@ -104,7 +104,7 @@ class Order
      */
     public function clearOrderItems()
     {
-        $this->orderItems = null;
+        $this->orderItems = [];
         return $this;
     }
 
@@ -121,7 +121,7 @@ class Order
         }
 
         $orderItem->setOrder($this);
-        $this->orderItems->add($orderItem);
+        $this->orderItems[] = $orderItem;
         return $this;
     }
 
@@ -129,11 +129,12 @@ class Order
      * Adds multiple items to the order at once
      *
      * @param array $orderItems
+     * @throws InvalidArgumentException
      * @return $this Provides fluent interface
      */
     public function addOrderItems($orderItems)
     {
-        if (!is_array($orderItems) || !$orderItems instanceof ArrayCollection) {
+        if (!is_array($orderItems) && !$orderItems instanceof ArrayCollection) {
             throw new InvalidArgumentException('Invalid order items provided');
         }
 
@@ -147,11 +148,12 @@ class Order
      * Removes all registered items and sets new
      *
      * @param OrderItem[]|ArrayCollection $orderItems
+     * @throws InvalidArgumentException
      * @return $this Provides fluent interface
      */
     public function setOrderItems($orderItems)
     {
-        if (!is_array($orderItems) || !$orderItems instanceof ArrayCollection) {
+        if (!is_array($orderItems) && !$orderItems instanceof ArrayCollection) {
             throw new InvalidArgumentException('Invalid order items provided');
         }
 

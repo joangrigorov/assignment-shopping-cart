@@ -16,8 +16,9 @@ return [
             'cart-add' => [
                 'type' => 'segment',
                 'options' => [
-                    'route' => '/add',
+                    'route' => '/cart/add',
                     'defaults' => [
+                        'controller' => 'Cart\Controller\Index',
                         'action' => 'add',
                     ],
                 ]

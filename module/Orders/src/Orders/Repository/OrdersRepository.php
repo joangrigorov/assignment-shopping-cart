@@ -22,16 +22,7 @@ class OrdersRepository extends EntityRepository
     public function save(Order $order)
     {
         $this->_em->persist($order);
-
-        $orderItems = clone $order->getOrderItems();
-        $order->clearOrderItems();
-        $this->_em->flush($order);
-
-        foreach ($orderItems as $orderItem) {
-            $order->addOrderItem($orderItem);
-        }
         $this->_em->flush();
-
         return $this;
     }
 

@@ -69,10 +69,14 @@ class IndexController extends AbstractActionController
         $quantityUpdater = $this->serviceLocator->get('Cart\Utils\QuantityUpdater');
         $quantityUpdater->updateQuantities($this->params()->fromPost('quantity'), session_id());
 
-
-        $forwardParams = [
-            'couponCode' => $this->params()->fromPost('couponCode')
-        ];
+        $couponCode = $this->params()->fromPost('couponCode', false);
+        if (!empty($couponCode)) {
+            $forwardParams = [
+                'couponCode' => $this->params()->fromPost('couponCode')
+            ];
+        } else {
+            $forwardParams = [];
+        }
 
         if ((boolean) $this->params()->fromPost('goToCheckoutPreview', false)) {
             return $this->redirect()->toRoute('checkout/preview', $forwardParams);
