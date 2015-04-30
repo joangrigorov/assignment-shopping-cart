@@ -16,9 +16,9 @@ $cartItems = $this->items;
 <table class="table table-condensed">
     <thead>
         <tr>
-            <th>Product</th>
-            <th width="40">Quantity</th>
-            <th width="200">Price</th>
+            <th width="70%">Product</th>
+            <th width="5%">Quantity</th>
+            <th>Price</th>
             <th></th>
         </tr>
     </thead>
@@ -37,12 +37,18 @@ $cartItems = $this->items;
                        value="<?php echo $item->getQuantityRequested(); ?>">
             </td>
             <td>
-                <?php echo $this->currencyFormat($item->getProduct()->getPrice()->getAmount(), 'USD') ?>
+                <small>
+                <?php echo $this->currencyFormat(
+                    $item->getProduct()->getPrice()->getAmount(), 'USD', null, 'en_US') ?>
                 x
-                <?php echo $item->getQuantityRequested(); ?> =
-                <?php echo $this->currencyFormat($item->getQuantifiedPrice()->getAmount(), 'USD'); ?>
+                <?php echo $item->getQuantityRequested(); ?>
+                </small>
             </td>
-            <td></td>
+            <td>
+                =
+                <?php echo $this->currencyFormat(
+                    $item->getQuantifiedPrice()->getAmount(), 'USD', null, 'en_US'); ?>
+            </td>
         </tr>
         <?php endforeach; ?>
     </tbody>
@@ -52,7 +58,7 @@ $cartItems = $this->items;
             </td>
             <td colspan="2">
                 <strong>Total price: <?php
-                    echo $this->currencyFormat($cartItems->sumOverallPrice()->getAmount(), 'USD'); ?>
+                    echo $this->currencyFormat($cartItems->sumOverallPrice()->getAmount(), 'USD', null, 'en_US'); ?>
                 </strong>
             </td>
         </tr>

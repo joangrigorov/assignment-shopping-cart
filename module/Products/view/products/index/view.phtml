@@ -1,0 +1,30 @@
+<?php
+/** @var \Products\Entity\Product $product */
+$product = $this->product;
+?>
+<h1><?php echo $this->escapeHtml($product->getName()); ?></h1>
+<hr>
+<?php echo nl2br($product->getFullDescription()); ?>
+<hr>
+<form action="<?php echo $this->url('cart/add') ?>" method="POST">
+    <div class="row">
+        <div class="col-sm-3">
+            <h4><?php echo $this->currencyFormat(
+                    $product->getPrice()->getAmount(), 'USD', null, 'en_US'
+                ); ?></h4>
+        </div>
+        <div class="col-sm-3 col-sm-offset-5">
+            <div class="col-sm-4">
+                <label for="quantity">Quantity</label>
+            </div>
+            <div class="col-sm-4">
+                <input type="hidden" name="product" value="<?php echo $product->getId() ?>">
+                <input class="form-control" name="quantity" id="quantity" value="1" type="text">
+            </div>
+            <div class="col-sm-4">
+                <button type="submit" class="btn btn-success"
+                    >Add to cart &raquo;</button>
+            </div>
+        </div>
+    </div>
+</form>

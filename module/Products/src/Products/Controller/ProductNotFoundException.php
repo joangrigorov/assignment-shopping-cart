@@ -1,6 +1,6 @@
 <?php
 
-namespace Cart\Controller;
+namespace Products\Controller;
 
 /**
  * Exception used when product was not found

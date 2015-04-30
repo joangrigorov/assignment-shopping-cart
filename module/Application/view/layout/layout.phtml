@@ -40,24 +40,18 @@
                     </a>
                 </div>
                 <div class="collapse navbar-collapse pull-left">
-                    <ul class="nav navbar-nav">
-                        <li class="active">
-                            <a href="<?php echo $this->url('home') ?>">
-                                <?php echo $this->translate('Home') ?>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="<?php echo $this->url('products') ?>">
-                                <?php echo $this->translate('Products') ?>
-                            </a>
-                        </li>
-                    </ul>
+
+                    <?php
+                    echo $this->navigation('navigation')
+                        ->menu()
+                        ->setUlClass('nav navbar-nav');
+                    ?>
                 </div><!--/.nav-collapse -->
                 <div class="collapse navbar-collapse pull-right">
                     <ul class="nav navbar-nav">
                         <li>
-                            <a href="<?php echo $this->url('home') ?>">
-                                <?php echo $this->translate('Shopping Cart (0)') ?>
+                            <a href="<?php echo $this->url('cart') ?>">
+                                Shopping cart
                             </a>
                         </li>
                     </ul>

@@ -37,4 +37,19 @@ class ProductsRepository extends EntityRepository
         return $this->findOneBy(['id' => $id]);
     }
 
+    /**
+     * Get latest products
+     *
+     * @param integer $limit
+     * @return Product[]
+     */
+    public function getLatestProducts($limit)
+    {
+        $query = $this->createQueryBuilder('p');
+        $query->orderBy('p.id', 'desc');
+        $query->setMaxResults($limit);
+
+        return $query->getQuery()->execute();
+    }
+
 }

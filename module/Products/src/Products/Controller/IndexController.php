@@ -54,4 +54,27 @@ class IndexController extends AbstractActionController
 
         return ['form' => $form];
     }
+
+    /**
+     * View product details
+     *
+     * @return array
+     * @throws ProductNotFoundException
+     */
+    public function viewAction()
+    {
+        /** @var \Products\Repository\ProductsRepository $productsRepository */
+        $productsRepository = $this->serviceLocator->get('Products\Repository\ProductsRepository');
+
+        $product = $productsRepository->findProductById($this->params()->fromRoute('id'));
+
+        if (is_null($product)) {
+            throw new ProductNotFoundException('Product with the specified ID cannot be found');
+        }
+
+        return [
+            'product' => $product
+        ];
+    }
+
 }

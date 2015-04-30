@@ -3,6 +3,7 @@
 namespace Cart\Controller;
 
 use Common\Value\QuantityRequested;
+use Products\Controller\ProductNotFoundException;
 use Zend\Mvc\Controller\AbstractActionController;
 
 /**
@@ -40,13 +41,13 @@ class IndexController extends AbstractActionController
     {
         /** @var \Products\Repository\ProductsRepository $productsRepository */
         $productsRepository = $this->serviceLocator->get('Products\Repository\ProductsRepository');
-        $product = $productsRepository->findProductById($this->params()->fromRoute('product'));
+        $product = $productsRepository->findProductById($this->params()->fromPost('product'));
 
         if (is_null($product)) {
             throw new ProductNotFoundException('Product with that ID cannot be found');
         }
 
-        $quantityRequested = new QuantityRequested($this->params()->fromRoute('quantity'));
+        $quantityRequested = new QuantityRequested($this->params()->fromPost('quantity'));
 
         /** @var \Cart\Utils\CartItemAdder $cartItemAdder */
         $cartItemAdder = $this->serviceLocator->get('Cart\Utils\CartItemAdder');

@@ -15,9 +15,9 @@ return [
                 'may_terminate' => true,
                 'child_routes' => [
                     'add' => [
-                        'type' => 'segment',
+                        'type' => 'literal',
                         'options' => [
-                            'route' => '/add/:product/:quantity',
+                            'route' => '/add',
                             'defaults' => [
                                 'action' => 'add',
                             ],

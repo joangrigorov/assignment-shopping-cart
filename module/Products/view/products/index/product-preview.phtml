@@ -2,24 +2,31 @@
 /** @var \Products\Entity\Product $product */
 $product = $this->product;
 ?>
+<form action="<?php echo $this->url('cart/add') ?>" method="POST">
 <div class="col-md-4">
     <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">
                 <?php echo $this->escapeHtml($product->getName()) ?>
                 <strong class="pull-right">
-                    <?php echo $this->currencyFormat($product->getPrice()->getAmount(), 'USD'); ?>
+                    <?php echo $this->currencyFormat(
+                        $product->getPrice()->getAmount(), 'USD', null, 'en_US'); ?>
                 </strong>
             </h3>
         </div>
         <div class="panel-body">
             <p><?php echo nl2br($this->escapeHtml($product->getShortDescription())); ?></p>
             <p>
-                <a class="btn btn-success pull-right"
-                   href="<?php echo $this->url('cart/add',
-                       ['product' => $product->getId(), 'quantity' => 1]) ?>"
-                   target="_blank">Add to cart &raquo;</a>
+                <a href="<?php echo $this->url('products/view', ['id' => $product->getId()]); ?>"
+                    class="btn btn-default pull-left">
+                    Read more
+                </a>
+                <input type="hidden" name="product" value="<?php echo $product->getId() ?>">
+                <input type="hidden" name="quantity" value="1">
+                <button type="submit" class="btn btn-success pull-right">
+                    Add to cart &raquo;</button>
             </p>
         </div>
     </div>
 </div>
+</form>

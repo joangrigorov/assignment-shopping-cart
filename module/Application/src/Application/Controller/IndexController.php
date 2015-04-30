@@ -16,6 +16,11 @@ class IndexController extends AbstractActionController
 {
     public function indexAction()
     {
-        return new ViewModel();
+        /** @var \Products\Repository\ProductsRepository $productsRepository */
+        $productsRepository = $this->serviceLocator->get('Products\Repository\ProductsRepository');
+
+        return [
+            'products' => $productsRepository->getLatestProducts(3)
+        ];
     }
 }
