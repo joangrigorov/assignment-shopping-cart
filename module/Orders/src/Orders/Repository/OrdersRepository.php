@@ -26,4 +26,30 @@ class OrdersRepository extends EntityRepository
         return $this;
     }
 
+    /**
+     * Get all orders
+     *
+     * Desc sorting is used
+     *
+     * @return Order[]
+     */
+    public function getAll()
+    {
+        $query = $this->createQueryBuilder('o');
+        $query->orderBy('o.id', 'desc');
+
+        return $query->getQuery()->execute();
+    }
+
+    /**
+     * Find single order by ID
+     *
+     * @param integer $id
+     * @return null|Order
+     */
+    public function findByID($id)
+    {
+        return $this->findOneBy(['id' => $id]);
+    }
+
 }

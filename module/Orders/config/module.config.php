@@ -24,6 +24,28 @@ return [
                     ]
                 ]
             ),
+            'order' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/orders',
+                    'defaults' => array(
+                        'controller' => 'Orders\Controller\Index',
+                        'action' => 'orders'
+                    ),
+                ),
+                'may_terminate' => true,
+                'child_routes' => [
+                    'view' => [
+                        'type' => 'segment',
+                        'options' => [
+                            'route' => '/view/:id',
+                            'defaults' => [
+                                'action' => 'view',
+                            ],
+                        ]
+                    ]
+                ]
+            ),
         ],
     ],
     'service_manager' => [

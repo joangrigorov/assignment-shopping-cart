@@ -54,7 +54,7 @@ class Order
      *
      * @var OrderItem[]|ArrayCollection|array
      *
-     * @ORM\OneToMany(targetEntity="\Orders\Entity\OrderItem", mappedBy="`order`",cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="\Orders\Entity\OrderItem", mappedBy="parentOrder",cascade={"persist"})
      */
     private $orderItems;
 

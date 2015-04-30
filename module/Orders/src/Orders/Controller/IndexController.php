@@ -19,8 +19,9 @@ class IndexController extends AbstractActionController
 
     /**
      * Step before the actual checkout.
-     *
      * Shows the user summary of his order.
+     *
+     * On post - performs checkout
      */
     public function checkoutPreviewAction()
     {
@@ -41,13 +42,41 @@ class IndexController extends AbstractActionController
                 $checkout = $this->serviceLocator->get('Orders\Utils\Checkout');
                 $checkout->checkout($cart, $order, session_id());
                 $this->flashMessenger()->addSuccessMessage('Items are ordered!');
-                return $this->redirect()->toRoute('products');
+                return $this->redirect()->toRoute('order/view', ['id' => $order->getId()]);
             }
         }
 
         return [
             'cart' => $cart,
             'checkoutForm' => $checkoutForm
+        ];
+    }
+
+    /**
+     * Displays all completed orders
+     *
+     * @return array
+     */
+    public function ordersAction()
+    {
+        /** @var \Orders\Repository\OrdersRepository $ordersRepository */
+        $ordersRepository = $this->serviceLocator->get('Orders\Repository\OrdersRepository');
+        return [
+            'orders' => $ordersRepository->getAll()
+        ];
+    }
+
+    /**
+     * View order by ID
+     *
+     * @return array
+     */
+    public function viewAction()
+    {
+        /** @var \Orders\Repository\OrdersRepository $ordersRepository */
+        $ordersRepository = $this->serviceLocator->get('Orders\Repository\OrdersRepository');
+        return [
+            'order' => $ordersRepository->findByID($this->params()->fromRoute('id'))
         ];
     }
 

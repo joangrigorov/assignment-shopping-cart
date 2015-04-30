@@ -10,7 +10,7 @@ use Products\Entity\Product;
 /**
  * Order item entity
  *
- * @ORM\Table(name="order_items", indexes={@ORM\Index(name="fk_order_items_1_idx", columns={"order"}), @ORM\Index(name="fk_order_items_2_idx", columns={"product"})})
+ * @ORM\Table(name="order_items", indexes={@ORM\Index(name="fk_order_items_1_idx", columns={"parentOrder"}), @ORM\Index(name="fk_order_items_2_idx", columns={"product"})})
  * @ORM\Entity
  */
 class OrderItem
@@ -42,10 +42,10 @@ class OrderItem
      *
      * @ORM\ManyToOne(targetEntity="\Orders\Entity\Order", inversedBy="orderItems")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="`order`", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="parentOrder", referencedColumnName="id")
      * })
      */
-    private $order;
+    private $parentOrder;
 
     /**
      * Reference to the ordered product
@@ -142,7 +142,7 @@ class OrderItem
      */
     public function getOrder()
     {
-        return $this->order;
+        return $this->parentOrder;
     }
 
     /**
@@ -153,7 +153,7 @@ class OrderItem
      */
     public function setOrder($order)
     {
-        $this->order = $order;
+        $this->parentOrder = $order;
         return $this;
     }
 
@@ -199,6 +199,16 @@ class OrderItem
     {
         $this->pricePurchased = $pricePurchased;
         return $this;
+    }
+
+    /**
+     * Retrieve total price, based on requested quantity
+     *
+     * @return \Products\Value\Price
+     */
+    public function getQuantifiedPrice()
+    {
+        return $this->product->getPrice()->quantify($this->getQuantityRequested());
     }
 
 
