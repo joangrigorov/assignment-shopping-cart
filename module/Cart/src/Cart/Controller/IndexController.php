@@ -69,7 +69,6 @@ class IndexController extends AbstractActionController
         $quantityUpdater = $this->serviceLocator->get('Cart\Utils\QuantityUpdater');
         $quantityUpdater->updateQuantities($this->params()->fromPost('quantity'), session_id());
 
-        $this->flashMessenger()->addSuccessMessage('Cart has been updated!');
 
         $forwardParams = [
             'couponCode' => $this->params()->fromPost('couponCode')
@@ -79,6 +78,7 @@ class IndexController extends AbstractActionController
             return $this->redirect()->toRoute('checkout/preview', $forwardParams);
         }
 
+        $this->flashMessenger()->addSuccessMessage('Cart has been updated!');
         return $this->redirect()->toRoute('cart', $forwardParams);
     }
 

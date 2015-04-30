@@ -40,7 +40,7 @@ class OrderItem
      *
      * @var \Orders\Entity\Order
      *
-     * @ORM\ManyToOne(targetEntity="\Orders\Entity\Order")
+     * @ORM\ManyToOne(targetEntity="\Orders\Entity\Order", cascade={"persist"})
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="order", referencedColumnName="id")
      * })

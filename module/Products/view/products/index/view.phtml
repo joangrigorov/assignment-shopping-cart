@@ -6,7 +6,7 @@ $product = $this->product;
 <hr>
 <?php echo nl2br($product->getFullDescription()); ?>
 <hr>
-<form action="<?php echo $this->url('cart/add') ?>" method="POST">
+<form action="<?php echo $this->url('cart-add') ?>" method="POST">
     <div class="row">
         <div class="col-sm-3">
             <h4><?php echo $this->currencyFormat(

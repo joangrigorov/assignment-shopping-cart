@@ -11,17 +11,14 @@ return [
                         'controller' => 'Cart\Controller\Index',
                         'action' => 'index'
                     ],
-                ],
-                'may_terminate' => true,
-                'child_routes' => [
-                    'add' => [
-                        'type' => 'segment',
-                        'options' => [
-                            'route' => '/add',
-                            'defaults' => [
-                                'action' => 'add',
-                            ],
-                        ]
+                ]
+            ],
+            'cart-add' => [
+                'type' => 'segment',
+                'options' => [
+                    'route' => '/add',
+                    'defaults' => [
+                        'action' => 'add',
                     ],
                 ]
             ],

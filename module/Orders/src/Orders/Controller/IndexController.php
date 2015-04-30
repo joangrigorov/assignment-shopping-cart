@@ -2,8 +2,18 @@
 
 namespace Orders\Controller;
 
+use Cart\Collection\Cart;
+use Orders\Entity\Order;
+use Orders\Form\Checkout;
 use Zend\Mvc\Controller\AbstractActionController;
 
+/**
+ * Checkout controller
+ *
+ * Manage orders
+ *
+ * @package Orders\Controller
+ */
 class IndexController extends AbstractActionController
 {
 
@@ -14,24 +24,46 @@ class IndexController extends AbstractActionController
      */
     public function checkoutPreviewAction()
     {
-        /** @var \Cart\Repository\CartItemsRepositoryInterface $cartItemsRepository */
-        $cartItemsRepository = $this->serviceLocator->get('Cart\Repository\CartItemsRepository');
-        $cart = $cartItemsRepository->getItemsBySession(session_id());
-
+        /** @var \Cart\Collection\DiscountedCartFactory $cartFactory */
+        $cartFactory = $this->serviceLocator->get('Cart\Collection\DiscountedCartFactory');
         $couponCode = $this->params()->fromRoute('couponCode', false);
+        $cart = $cartFactory->getCartWithDiscount(session_id(), $couponCode);
 
-        if ($couponCode !== false) {
-            /** @var \Orders\Repository\DiscountCouponsRepository $discountCouponsRepository */
-            $discountCouponsRepository = $this->serviceLocator->get('Orders\Repository\DiscountCouponsRepository');
-            $coupon = $discountCouponsRepository->findByCode($couponCode);
-            if (null !== $coupon) {
-                $cart->setDiscountCoupon($coupon);
+        /** @var Checkout $checkoutForm */
+        $checkoutForm = $this->serviceLocator->get('Orders\Form\Checkout');
+
+        if ($this->request->isPost()) {
+            $checkoutForm->setData($this->params()->fromPost());
+            if ($checkoutForm->isValid()) {
+                return $this->processOrder($checkoutForm, $cart);
             }
         }
 
         return [
             'cart' => $cart,
-            'checkoutForm' => $this->serviceLocator->get('Orders\Form\Checkout')
+            'checkoutForm' => $checkoutForm
         ];
     }
+
+    /**
+     * Process checkout
+     *
+     * @todo Write a utility class for this
+     *
+     * @param Checkout $checkoutForm
+     * @param Cart $cart
+     * @return \Zend\Http\Response
+     */
+    private function processOrder(Checkout $checkoutForm, Cart $cart)
+    {
+        /** @var Order $order */
+        $order = $checkoutForm->getObject();
+        $order->setOrderItemsFromCart($cart);
+        /** @var \Orders\Repository\OrdersRepository $ordersRepo */
+        $ordersRepo = $this->serviceLocator->get('Orders\Repository\OrdersRepository');
+        $ordersRepo->save($order);
+        $this->flashMessenger()->addSuccessMessage('Items are ordered!');
+        return $this->redirect()->toRoute('products');
+    }
+
 }
