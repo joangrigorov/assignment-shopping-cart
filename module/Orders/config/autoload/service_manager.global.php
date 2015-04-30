@@ -17,6 +17,16 @@ return [
                     new \Orders\Hydrator\OrdersHydrator()
                 );
             },
+            'Orders\Utils\Checkout' => function ($sm) {
+                /** @var \Cart\Repository\CartItemsRepositoryInterface $cartItemsRepo */
+                $cartItemsRepo = $sm->get('Cart\Repository\CartItemsRepository');
+                /** @var \Orders\Repository\OrdersRepository $ordersRepo */
+                $ordersRepo = $sm->get('Orders\Repository\OrdersRepository');
+                return new \Orders\Utils\Checkout(
+                    $cartItemsRepo,
+                    $ordersRepo
+                );
+            },
         ]
     ]
 ];

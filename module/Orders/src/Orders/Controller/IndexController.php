@@ -35,7 +35,13 @@ class IndexController extends AbstractActionController
         if ($this->request->isPost()) {
             $checkoutForm->setData($this->params()->fromPost());
             if ($checkoutForm->isValid()) {
-                return $this->processOrder($checkoutForm, $cart);
+                /** @var Order $order */
+                $order = $checkoutForm->getObject();
+                /** @var \Orders\Utils\Checkout $checkout */
+                $checkout = $this->serviceLocator->get('Orders\Utils\Checkout');
+                $checkout->checkout($cart, $order, session_id());
+                $this->flashMessenger()->addSuccessMessage('Items are ordered!');
+                return $this->redirect()->toRoute('products');
             }
         }
 
@@ -43,28 +49,6 @@ class IndexController extends AbstractActionController
             'cart' => $cart,
             'checkoutForm' => $checkoutForm
         ];
-    }
-
-    /**
-     * Process checkout
-     *
-     * @todo Write a utility class for this
-     *
-     * @param Checkout $checkoutForm
-     * @param Cart $cart
-     * @return \Zend\Http\Response
-     */
-    private function processOrder(Checkout $checkoutForm, Cart $cart)
-    {
-        /** @var Order $order */
-        $order = $checkoutForm->getObject();
-        $order->setOrderDate(new \DateTimeImmutable('now'));
-        $order->setOrderItemsFromCart($cart);
-        /** @var \Orders\Repository\OrdersRepository $ordersRepo */
-        $ordersRepo = $this->serviceLocator->get('Orders\Repository\OrdersRepository');
-        $ordersRepo->save($order);
-        $this->flashMessenger()->addSuccessMessage('Items are ordered!');
-        return $this->redirect()->toRoute('products');
     }
 
 }

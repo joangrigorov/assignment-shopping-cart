@@ -66,4 +66,19 @@ class CartItemsRepository extends EntityRepository implements CartItemsRepositor
     {
         return $this->findOneBy(['id' => $id, 'sessionID' => $sessionID]);
     }
+
+    /**
+     * Clears all items for a user session
+     *
+     * @param string $sessionID
+     * @return $this Provides fluent interface
+     */
+    public function clearCart($sessionID)
+    {
+        $query = $this->createQueryBuilder('p');
+        $query->delete()->where('p.sessionID = ?1');
+        $query->setParameter(1, $sessionID);
+        $query->getQuery()->execute();
+        return $this;
+    }
 }
