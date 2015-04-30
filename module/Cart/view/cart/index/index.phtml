@@ -3,7 +3,7 @@ $this->headScript()
      ->prependFile($this->basePath('js/cart.init.js'));
 
 echo $this->flashMessenger()->render('success', ['alert', 'alert-success']);
-/** @var \Cart\Entity\CartItem[]|\Cart\Collection\CartItemsCollection $cartItems */
+/** @var \Cart\Entity\CartItem[]|\Cart\Collection\Cart $cartItems */
 $cartItems = $this->items;
 ?>
 
@@ -12,7 +12,8 @@ $cartItems = $this->items;
     Cart is empty
 </div>
 <?php else : ?>
-<form action="<?php echo $this->url('cart/update'); ?>" method="POST">
+<form action="<?php echo $this->url('cart-update'); ?>" method="POST"
+    id="cart-form">
 <table class="table table-condensed">
     <thead>
         <tr>
@@ -55,6 +56,16 @@ $cartItems = $this->items;
     <tfoot>
         <tr>
             <td colspan="2">
+                <div class="col-sm-5">
+                    <label class="col-sm-6" for="coupon-code">
+                        Discount code:
+                    </label>
+                    <div class="col-sm-6">
+                        <input class="form-control"
+                               name="couponCode" id="coupon-code" type="text"
+                            value="<?php echo $this->escapeHtmlAttr($this->couponCode); ?>">
+                    </div>
+                </div>
             </td>
             <td colspan="2">
                 <strong>Total price: <?php
@@ -79,9 +90,11 @@ $cartItems = $this->items;
                     </div>
                     <div class="col-sm-3 pull-right">
                         <div class="btn-group">
-                            <button class="btn btn-success">
+                            <input type="hidden" name="goToCheckoutPreview" value="0">
+                            <a class="btn btn-success"
+                                onclick="$.event.trigger({type: 'cart.submit'});return false;">
                                 Checkout
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </div>

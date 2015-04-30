@@ -2,7 +2,7 @@
 
 namespace Cart\Repository;
 
-use Cart\Collection\CartItemsCollection;
+use Cart\Collection\Cart;
 use Cart\Entity\CartItem;
 use Doctrine\ORM\EntityRepository;
 use Products\Entity\Product;
@@ -47,12 +47,12 @@ class CartItemsRepository extends EntityRepository implements CartItemsRepositor
      * Get items in cart by user session
      *
      * @param string $sessionID
-     * @return CartItem[]|CartItemsCollection|null
+     * @return CartItem[]|Cart|null
      */
     public function getItemsBySession($sessionID)
     {
         $items = $this->findBy(['sessionID' => $sessionID]);
-        return new CartItemsCollection($items);
+        return new Cart($items);
     }
 
     /**

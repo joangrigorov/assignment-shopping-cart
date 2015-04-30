@@ -45,6 +45,34 @@ class ProductFilter extends InputFilter
                 ],
             ],
         ]);
+
+        $this->add([
+            'name' => 'shortDescription',
+            'required' => true,
+            'filters' => [
+                ['name' => 'StringTrim'],
+                ['name' => 'StripTags'],
+            ],
+            'validators' => [
+                [
+                    'name' => 'StringLength',
+                    'options' => [
+                        'encoding' => 'UTF-8',
+                        'min' => 1,
+                        'max' => 225,
+                    ],
+                ],
+            ],
+        ]);
+
+        $this->add([
+            'name' => 'fullDescription',
+            'required' => true,
+            'filters' => [
+                ['name' => 'StringTrim'],
+                ['name' => 'StripTags'],
+            ]
+        ]);
     }
 
 }

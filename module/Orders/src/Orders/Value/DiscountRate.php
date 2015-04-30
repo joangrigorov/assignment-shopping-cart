@@ -51,4 +51,14 @@ class DiscountRate
         return (int) $this->discountRate;
     }
 
+    /**
+     * Get discount rate as string (adds % at the end)
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return (string) $this->getDiscountRate() . '%';
+    }
+
 }

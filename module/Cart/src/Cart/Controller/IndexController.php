@@ -24,7 +24,8 @@ class IndexController extends AbstractActionController
         /** @var \Cart\Repository\CartItemsRepositoryInterface $cartItemsRepository */
         $cartItemsRepository = $this->serviceLocator->get('Cart\Repository\CartItemsRepository');
         return [
-            'items' => $cartItemsRepository->getItemsBySession(session_id())
+            'items' => $cartItemsRepository->getItemsBySession(session_id()),
+            'couponCode' => $this->params()->fromRoute('couponCode')
         ];
     }
 
@@ -69,7 +70,16 @@ class IndexController extends AbstractActionController
         $quantityUpdater->updateQuantities($this->params()->fromPost('quantity'), session_id());
 
         $this->flashMessenger()->addSuccessMessage('Cart has been updated!');
-        return $this->redirect()->toRoute('cart');
+
+        $forwardParams = [
+            'couponCode' => $this->params()->fromPost('couponCode')
+        ];
+
+        if ((boolean) $this->params()->fromPost('goToCheckoutPreview', false)) {
+            return $this->redirect()->toRoute('checkout/preview', $forwardParams);
+        }
+
+        return $this->redirect()->toRoute('cart', $forwardParams);
     }
 
 }

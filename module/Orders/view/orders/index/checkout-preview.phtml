@@ -1,0 +1,112 @@
+<?php
+$this->headScript()
+    ->prependFile($this->basePath('js/cart.init.js'));
+
+echo $this->flashMessenger()->render('success', ['alert', 'alert-success']);
+/** @var \Cart\Entity\CartItem[]|\Cart\Collection\Cart $cart */
+$cart = $this->cart;
+?>
+
+<?php if (!count($cart)) : ?>
+    <div class="alert alert-warning">
+        Cart is empty
+    </div>
+<?php else : ?>
+<h1>Checkout preview</h1>
+<hr>
+<h2>Items summary</h2>
+<table class="table table-condensed">
+    <thead>
+    <tr>
+        <th width="70%">Product</th>
+        <th width="5%">Quantity</th>
+        <th>Price</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php foreach ($cart as $item) : ?>
+        <tr>
+            <td>
+                <a href="<?php echo $this->url('products/view', ['id' => $item->getProduct()->getId()]); ?>">
+                    <?php echo $this->escapeHtml($item->getProduct()->getName()); ?>
+                </a>
+            </td>
+            <td>
+                <?php echo $item->getQuantityRequested(); ?>
+            </td>
+            <td>
+                <small>
+                    x
+                    <?php echo $this->currencyFormat(
+                        $item->getProduct()->getPrice()->getAmount(), 'USD', null, 'en_US') ?>
+                </small>
+            </td>
+            <td>
+                =
+                <?php echo $this->currencyFormat(
+                    $item->getQuantifiedPrice()->getAmount(), 'USD', null, 'en_US'); ?>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+    </tbody>
+    <tfoot>
+    <tr>
+        <td colspan="2">
+        </td>
+        <td colspan="2">
+            <strong>Total price: <?php
+                echo $this->currencyFormat($cart->sumOverallPrice()->getAmount(), 'USD', null, 'en_US'); ?>
+            </strong>
+            <?php if ($cart->hasDiscount()) : ?>
+            <br>
+            <strong class="discount">
+                After discount (<?php echo $cart->getDiscountCoupon()->getDiscountRate(); ?>):
+                <?php echo $this->currencyFormat($cart->sumOverallPrice(true)->getAmount(), 'USD', null, 'en_US') ?>
+            </strong>
+            <?php endif; ?>
+        </td>
+    </tr>
+    </tfoot>
+</table>
+<h2>Shipping details</h2>
+<div class="row clearfix form-group">
+<?php
+/** @var Orders\Form\Checkout $form */
+$form = $this->checkoutForm;
+?>
+    <?php echo $this->form()->openTag($form); ?>
+    <div class="col-sm-2">
+        <?php echo $this->formElement($form->get('firstName')); ?>
+        <?php echo $this->formElementErrors($form->get('firstName')); ?>
+    </div>
+    <div class="col-sm-2">
+        <?php echo $this->formElement($form->get('lastName')); ?>
+        <?php echo $this->formElementErrors($form->get('lastName')); ?>
+    </div>
+    <div class="col-sm-8">
+        <?php echo $this->formElement($form->get('address')); ?>
+        <?php echo $this->formElementErrors($form->get('address')); ?>
+    </div>
+</div>
+<div class="row clearfix form-group">
+    <div class="col-sm-3">
+        <?php echo $this->formElement($form->get('city')); ?>
+    <?php echo $this->formElementErrors($form->get('city')); ?>
+    </div>
+    <div class="col-sm-2">
+        <?php echo $this->formElement($form->get('country')); ?>
+    <?php echo $this->formElementErrors($form->get('country')); ?>
+    </div>
+    <div class="col-sm-3">
+        <?php echo $this->formElement($form->get('phone')); ?>
+    <?php echo $this->formElementErrors($form->get('phone')); ?>
+    </div>
+</div>
+<hr>
+<button class="pull-right btn btn-success" type="submit">
+Order now!
+</button>
+<?php echo $this->form()->closeTag(); ?>
+</div>
+<?php endif; ?>

@@ -4,6 +4,7 @@ namespace Orders\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Orders\Value\ShippingDetails;
 use Orders\Value\TotalPrice;
 
 /**
@@ -55,17 +56,28 @@ class Order
     private $orderItems = [];
 
     /**
+     * Total price
+     *
+     * @var \Orders\Value\ShippingDetails
+     *
+     * @ORM\Embedded(class="\Orders\Value\ShippingDetails", columnPrefix = false)
+     */
+    private $shippingDetails;
+
+    /**
      * Constructor
      *
      * Sets order items in order
      *
      * @param OrderItem[] $orderItems
+     * @param ShippingDetails $shippingDetails
      */
-    public function __construct(array $orderItems)
+    public function __construct(array $orderItems, ShippingDetails $shippingDetails)
     {
         $this->orderDate = new \DateTimeImmutable('now');
         $this->setOrderItems($orderItems);
         $this->totalPrice = $this->recalculateTotalPrice();
+        $this->shippingDetails = $shippingDetails;
     }
 
     /**
@@ -218,6 +230,28 @@ class Order
     public function getOrderItems()
     {
         return $this->orderItems;
+    }
+
+    /**
+     * Getter for $shippingDetails
+     *
+     * @return ShippingDetails
+     */
+    public function getShippingDetails()
+    {
+        return $this->shippingDetails;
+    }
+
+    /**
+     * Setter for $shippingDetails
+     *
+     * @param ShippingDetails $shippingDetails
+     * @return Order Provides fluent interface
+     */
+    public function setShippingDetails(ShippingDetails $shippingDetails)
+    {
+        $this->shippingDetails = $shippingDetails;
+        return $this;
     }
 
 }

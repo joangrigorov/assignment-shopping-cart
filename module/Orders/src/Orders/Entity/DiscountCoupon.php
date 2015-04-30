@@ -8,8 +8,8 @@ use Orders\Value\DiscountRate;
 /**
  * Discount coupons entity
  *
- * @ORM\Table(name="discount_coupon")
- * @ORM\Entity
+ * @ORM\Table(name="discount_coupon", indexes={@ORM\Index(name="code", columns={"code"})})
+ * @ORM\Entity(repositoryClass="\Orders\Repository\DiscountCouponsRepository")
  */
 class DiscountCoupon
 {

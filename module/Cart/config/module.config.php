@@ -3,19 +3,19 @@
 return [
     'router' => [
         'routes' => [
-            'cart' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
-                'options' => array(
-                    'route'    => '/cart',
-                    'defaults' => array(
+            'cart' => [
+                'type' => 'segment',
+                'options' => [
+                    'route' => '/cart[/coupon/:couponCode]',
+                    'defaults' => [
                         'controller' => 'Cart\Controller\Index',
-                        'action'     => 'index',
-                    ),
-                ),
+                        'action' => 'index'
+                    ],
+                ],
                 'may_terminate' => true,
                 'child_routes' => [
                     'add' => [
-                        'type' => 'literal',
+                        'type' => 'segment',
                         'options' => [
                             'route' => '/add',
                             'defaults' => [
@@ -23,17 +23,18 @@ return [
                             ],
                         ]
                     ],
-                    'update' => [
-                        'type' => 'literal',
-                        'options' => [
-                            'route' => '/update',
-                            'defaults' => [
-                                'action' => 'update',
-                            ],
-                        ]
+                ]
+            ],
+            'cart-update' => [
+                'type' => 'segment',
+                'options' => [
+                    'route' => '/cart/update',
+                    'defaults' => [
+                        'controller' => 'Cart\Controller\Index',
+                        'action' => 'update',
                     ],
                 ]
-            ),
+            ],
         ],
     ],
     'controllers' => [

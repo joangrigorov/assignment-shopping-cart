@@ -2,6 +2,7 @@
 
 namespace Cart\Repository;
 
+use Cart\Collection\Cart;
 use Cart\Entity\CartItem;
 use Products\Entity\Product;
 
@@ -34,7 +35,7 @@ interface CartItemsRepositoryInterface
      * Get items in cart by user session
      *
      * @param string $sessionID
-     * @return CartItem[]
+     * @return CartItem[]|Cart
      */
     public function getItemsBySession($sessionID);
 
