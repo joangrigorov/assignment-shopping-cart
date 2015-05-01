@@ -260,26 +260,5 @@ class Order
         return $this;
     }
 
-    /**
-     * Sets order items from cart collection
-     *
-     * @param Cart|CartItem[] $cart
-     * @return $this Provides fluent interface
-     */
-    public function setOrderItemsFromCart(Cart $cart)
-    {
-        foreach ($cart as $item) {
-            $this->addOrderItem(new OrderItem(
-                $item->getQuantityRequested(), $item->getProduct(),
-                new PricePurchased($item->getProduct()->getPrice()->getAmount())
-            ));
-        }
-
-        // set the total price using discount
-        // TODO: maybe not the best place to put, needs to move
-        $this->setTotalPrice(new TotalPrice($cart->sumOverallPrice(true)->getAmount()));
-        return $this;
-    }
-
 }
 

@@ -5,7 +5,11 @@ namespace Orders\Utils;
 use Cart\Collection\Cart;
 use Cart\Repository\CartItemsRepositoryInterface;
 use Orders\Entity\Order;
+use Orders\Entity\OrderItem;
 use Orders\Repository\OrdersRepository;
+use Orders\Value\PricePurchased;
+use Orders\Value\ShippingDetails;
+use Orders\Value\TotalPrice;
 
 /**
  * Utility for checkout orders
@@ -49,15 +53,40 @@ class Checkout
      * Performs checkout
      *
      * @param Cart $cart
-     * @param Order $order
-     * @param string $sessionID
+     * @param ShippingDetails $shippingDetails
+     * @return Order
      */
-    public function checkout(Cart $cart, Order $order, $sessionID)
+    public function checkout(Cart $cart, ShippingDetails $shippingDetails)
     {
-        $order->setOrderDate(new \DateTimeImmutable('now'));
-        $order->setOrderItemsFromCart($cart);
+        $order = $this->createOrderEntityFromCart($cart, $shippingDetails);
         $this->ordersRepository->save($order);
-        $this->cartItemsRepository->clearCart($sessionID);
+        $this->cartItemsRepository->clearCart($cart->getSessionID());
+        return $order;
+    }
+
+    /**
+     * Factory for orders
+     *
+     * Creates an order entity and injects items + shipping details
+     *
+     * @param Cart $cart
+     * @param ShippingDetails $shippingDetails
+     * @return Order
+     */
+    private function createOrderEntityFromCart(Cart $cart, ShippingDetails $shippingDetails)
+    {
+        $orderItems = [];
+
+        foreach ($cart as $cartItem) {
+            $orderItems[] = new OrderItem(
+                $cartItem->getQuantityRequested(), $cartItem->getProduct(),
+                new PricePurchased($cartItem->getProduct()->getPrice()->getAmount())
+            );
+        }
+
+        $order = new Order($orderItems, $shippingDetails);
+        $order->setTotalPrice(new TotalPrice($cart->sumOverallPrice(true)->getAmount()));
+        return $order;
     }
 
 }

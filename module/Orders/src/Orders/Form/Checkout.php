@@ -103,7 +103,7 @@ class Checkout extends Form
             ]
         ]);
 
-        $reflection = new \ReflectionClass('\Orders\Entity\Order');
+        $reflection = new \ReflectionClass('\Orders\Value\ShippingDetails');
 
         $this->setHydrator($hydrator);
         $this->bind($reflection->newInstanceWithoutConstructor());

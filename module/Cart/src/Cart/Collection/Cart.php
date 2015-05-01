@@ -24,6 +24,13 @@ class Cart extends \ArrayObject
     private $discountCoupon;
 
     /**
+     * Session ID, associated with the cart
+     *
+     * @var string
+     */
+    private $sessionID;
+
+    /**
      * Setter for $discountCoupon
      *
      * @param DiscountCoupon $discountCoupon
@@ -53,6 +60,30 @@ class Cart extends \ArrayObject
     public function hasDiscount()
     {
         return null != $this->discountCoupon;
+    }
+
+    /**
+     * Getter for $sessionID
+     *
+     * @return string
+     */
+    public function getSessionID()
+    {
+        return $this->sessionID;
+    }
+
+    /**
+     * Constructor
+     *
+     * Sets items and session ID
+     *
+     * @param CartItem[] $input
+     * @param string $sessionID
+     */
+    public function __construct($input = null, $sessionID)
+    {
+        $this->sessionID = $sessionID;
+        parent::__construct($input);
     }
 
     /**

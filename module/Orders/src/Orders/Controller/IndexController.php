@@ -5,6 +5,7 @@ namespace Orders\Controller;
 use Cart\Collection\Cart;
 use Orders\Entity\Order;
 use Orders\Form\Checkout;
+use Orders\Value\ShippingDetails;
 use Zend\Mvc\Controller\AbstractActionController;
 
 /**
@@ -36,11 +37,11 @@ class IndexController extends AbstractActionController
         if ($this->request->isPost()) {
             $checkoutForm->setData($this->params()->fromPost());
             if ($checkoutForm->isValid()) {
-                /** @var Order $order */
-                $order = $checkoutForm->getObject();
+                /** @var ShippingDetails $shippingDetails */
+                $shippingDetails = $checkoutForm->getObject();
                 /** @var \Orders\Utils\Checkout $checkout */
                 $checkout = $this->serviceLocator->get('Orders\Utils\Checkout');
-                $checkout->checkout($cart, $order, session_id());
+                $order = $checkout->checkout($cart, $shippingDetails, session_id());
                 $this->flashMessenger()->addSuccessMessage('Items are ordered!');
                 return $this->redirect()->toRoute('order/view', ['id' => $order->getId()]);
             }

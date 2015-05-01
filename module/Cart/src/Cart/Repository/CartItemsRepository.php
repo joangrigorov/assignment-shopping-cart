@@ -52,7 +52,7 @@ class CartItemsRepository extends EntityRepository implements CartItemsRepositor
     public function getItemsBySession($sessionID)
     {
         $items = $this->findBy(['sessionID' => $sessionID]);
-        return new Cart($items);
+        return new Cart($items, $sessionID);
     }
 
     /**

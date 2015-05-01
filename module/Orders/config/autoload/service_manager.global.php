@@ -14,7 +14,7 @@ return [
             'Orders\Form\Checkout' => function () {
                 return new \Orders\Form\Checkout(
                     new \Orders\Form\CheckoutFilter(),
-                    new \Orders\Hydrator\OrdersHydrator()
+                    new \Zend\Stdlib\Hydrator\Reflection(false)
                 );
             },
             'Orders\Utils\Checkout' => function ($sm) {
